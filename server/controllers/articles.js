@@ -2,32 +2,34 @@ var Article = require('mongoose').model('Article');
 
 exports.getArticles = function (req, res) {
     Article.find({}).exec(function (err, collection) {
+        if (err)
+            console.log(err);
         res.send(collection);
     })
 };
 
-exports.getArticlesForQuery = function (req, res) {
-    Article.find({
-        $or: [{content: {$regex: req.params.query, $options: 'i'}}, {
-            title: {
-                $regex: req.params.query,
-                $options: 'i'
-            }
-        }]
-    }).exec(function (err, collection) {
+var getArticlesForQuery = exports.getArticlesForQuery = function (req, res) {
+    Article.find({$text: {$search: req.params.query}}).exec(function (err, collection) {
         res.send(collection);
     })
 };
 
 exports.getArticlesForQueryWithLocation = function (req, res) {
+    if (!req.body.hasOwnProperty('lat') || !req.body.hasOwnProperty('long')) {
+        console.log("WARNING: NO COORDINATES. PASSING ON TO REGULAR HANDLER!");
+        getArticlesForQuery(req, res);
+        return;
+    }
+
+    console.log(req.body.lat, req.body.long)
     Article.find({
-        $or: [{content: {$regex: req.params.query, $options: 'i'}}, {
-            title: {
-                $regex: req.params.query,
-                $options: 'i'
-            }
+        $or: [
+            {content: {$regex: req.params.query, $options: 'i'}},
+            {
+                title: {$regex: req.params.query, $options: 'i'}
         }]
-    }).exec(function (err, collection) {
+    }).near('location', {center: [req.body.long, req.body.lat], spherical: true}).exec(function (err, collection) {
+        if (err) throw err;
         res.send(collection);
     })
 };

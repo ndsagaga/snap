@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var GeoJSON = require('mongoose-geojson-schema');
 
 var articleSchema = mongoose.Schema({
     id: {type: Number, required: '{PATH} is required!'},
@@ -8,17 +9,10 @@ var articleSchema = mongoose.Schema({
     content: {type: String, required: '{PATH} is required!'},
     author: {type: String, required: '{PATH} is required!'},
     readMoreUrl: {type: String, required: '{PATH} is required!'},
-    location: {
-        type: {
-            type: String,
-            enum: ['MultiPoint'],
-            required: true
-        },
-        coordinates: {
-            type: [[Number]],
-            required: true
-        }
-    },
-    timestamp: {type: Date, required: '{PATH} is required!'},
+    location: mongoose.Schema.Types.MultiPoint,
+    timestamp: {type: Number, required: '{PATH} is required!'},
 });
-var Article = mongoose.model('Article', articleSchema);
+
+articleSchema.index({location: "2dsphere"});
+articleSchema.index({title: "text", content: "text"});
+var Article = mongoose.model('Article', articleSchema, 'Article');
