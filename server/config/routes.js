@@ -1,14 +1,22 @@
 var articles = require('../controllers/articles'),
     images = require('../controllers/images'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    path = require('path');
 
 module.exports = function (app) {
+
+    app.get('/view/:file', function (req, res) {
+        res.sendFile(path.join(__dirname + '/../views/') + req.params.file);
+    });
+
+    app.get('/res/:folder/:file', function (req, res) {
+        res.sendFile(path.join(__dirname + '/../res/') + req.params.folder + '/' + req.params.file);
+    });
+
+    app.post('/search', articles.getArticlesForQueryWithLocation);
+
     app.get('/api/articles', articles.getArticles);
     app.get('/api/articles/:query', articles.getArticlesForQueryWithLocation);
-
-    app.get('/partials/*', function (req, res) {
-        res.render('../../public/app/' + req.params[0]);
-    });
 
     app.get('/api/image/:image', images.getImage);
     app.get('/api/images', images.getAllImages);

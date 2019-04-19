@@ -9,7 +9,7 @@ exports.getArticles = function (req, res) {
 };
 
 var getArticlesForQuery = exports.getArticlesForQuery = function (req, res) {
-    Article.find({$text: {$search: req.params.query}}).exec(function (err, collection) {
+    Article.find({$text: {$search: req.body.searchbox}}).exec(function (err, collection) {
         res.send(collection);
     })
 };
@@ -24,9 +24,9 @@ exports.getArticlesForQueryWithLocation = function (req, res) {
     console.log(req.body.lat, req.body.long)
     Article.find({
         $or: [
-            {content: {$regex: req.params.query, $options: 'i'}},
+            {content: {$regex: req.body.searchbox, $options: 'i'}},
             {
-                title: {$regex: req.params.query, $options: 'i'}
+                title: {$regex: req.body.searchbox, $options: 'i'}
         }]
     }).near('location', {center: [req.body.long, req.body.lat], spherical: true}).exec(function (err, collection) {
         if (err) throw err;
