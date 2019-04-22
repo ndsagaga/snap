@@ -17,6 +17,9 @@ module.exports = function (app) {
 
     app.get('/api/articles', articles.getArticles);
     app.get('/api/articles/:query', articles.getArticlesForQueryWithLocation);
+    app.get('/api/article/:id', articles.getArticlesById);
+
+    app.post('/api/article/:id/comment', articles.addCommentToArticle);
 
     app.get('/api/image/:image', images.getImage);
     app.get('/api/images', images.getAllImages);
