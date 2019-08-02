@@ -1,4 +1,5 @@
-var Article = require('mongoose').model('Article');
+var Article = require('mongoose').model('Article'),
+    images = require('../controllers/images');
 
 exports.getArticles = function (req, res) {
     Article.find({}).exec(function (err, collection) {
@@ -47,7 +48,7 @@ var getArticlesForQuery = exports.getArticlesForQuery = function (req, res) {
     var t = Date.now();
     Article.find({$text: {$search: req.body.searchbox}}).exec(function (err, collection) {
         t = Date.now() - t;
-        collection['time'] = t;
+        var result = {result:"success",ip:getIP(req),loc:{lat:req.body.lat,long:req.body.long},time:t,data:collection,images:images.getImageCount};
         res.send(collection);
     })
 };
@@ -74,8 +75,21 @@ exports.getArticlesForQueryWithLocation = function (req, res) {
         }]
     }).near('location', {center: [req.body.long, req.body.lat], spherical: true}).exec(function (err, collection) {
         if (err) throw err;
-        t = Date.now() - t;
-        collection['time'] = t;
-        res.send(collection);
+        images.getImageCount(function (count) {
+            t = Date.now() - t;
+            var result = {result:"success",ip:getIP(req),loc:{lat:req.body.lat,long:req.body.long},time:t,images:count,data:collection};
+            res.send(result);
+        });
     })
 };
+
+function getIP(req) {
+    var ip = req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        (req.connection.socket ? req.connection.socket.remoteAddress : null);
+
+    if (ip === null)
+        return ip;
+
+    return ip.substring(6);
+}

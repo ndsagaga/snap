@@ -22,7 +22,6 @@ module.exports = function (app) {
     app.post('/api/article/:id/comment', articles.addCommentToArticle);
 
     app.get('/api/image/:image', images.getImage);
-    app.get('/api/images', images.getAllImages);
 
     app.all('/api/location', function (req, res) {
         var ip = req.connection.remoteAddress ||
@@ -37,10 +36,6 @@ module.exports = function (app) {
     });
 
     app.get('*', function (req, res) {
-        var ip = req.connection.remoteAddress ||
-            req.socket.remoteAddress ||
-            (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        console.log("WRONG API: " + ip)
         res.render('index', {
             bootstrappedUser: req.user
         });

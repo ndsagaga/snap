@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snap - Search Results</title>
+    <link href="/res/image/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/res/css/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" rel="stylesheet">
+</head>
+<body>
+
+<div class="navigation">
+    <div class="left">
+        <a href="/view/index.html" class="logo-text">snap</a>
+        <input class="searchbox" id="searchbox" name="searchbox" placeholder="Search.." required type="search">
+        <input class="loc-btn" id="loc-btn" type="button">
+        <input class="searchbutton" id="homesearch" type="submit" value="Search">
+    </div>
+    <div class="tabs">
+        <a class="tab active" id="article-tab">
+            Articles
+        </a>
+        <a class="tab" id="image-tab">
+            Images
+        </a>
+    </div>
+</div>
+
+<div class="results">
+    <div class="listing" id="listing">
+    </div>
+    <div class="statistics" id="extra">
+        <a style="cursor: pointer" id="sample-images"></a>
+        <div id="statistics"></div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="/res/js/search.js"></script>
+</body>
+</html>

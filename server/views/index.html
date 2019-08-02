@@ -8,12 +8,10 @@
 </head>
 <body>
 <div class="fullscreen">
-    <form action="/search" class="center" method="post">
+    <form action="/view/search.html" class="center" method="get">
         <div class="logo-text">snap</div>
         <input class="searchbox" id="searchbox" name="searchbox" placeholder="Search.." required type="search"><br>
         <input class="searchbutton" id="homesearch" style="margin-top: 20px" type="submit" value="Search">
-        <input id="lat" name="lat" type="hidden">
-        <input id="long" name="long" type="hidden">
     </form>
 </div>
 
@@ -21,18 +19,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script crossorigin="anonymous" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
         src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script>
-    var tryAPIGeolocation = function () {
-        jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBxDK6uZ7vUJ7Q0T1UXmh7NZovDErHBERI", function (success) {
-            document.getElementById("lat").value = success.location.lat;
-            document.getElementById("long").value = success.location.lng;
-        })
-            .fail(function (err) {
-                alert("API Geolocation error! \n\n" + err);
-            });
-    };
-
-    tryAPIGeolocation();
-</script>
 </body>
 </html>
